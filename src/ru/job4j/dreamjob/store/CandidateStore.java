@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CandidateStore {
-    private static final CandidateStore INST = new CandidateStore();
     private final AtomicInteger idCount = new AtomicInteger();
 
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
@@ -19,10 +18,6 @@ public class CandidateStore {
         candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "kirill", "intern", LocalDateTime.of(2022, Month.AUGUST,24,20,40)));
         candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "stas", "coach java", LocalDateTime.now()));
         candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "petr", "Java senior", LocalDateTime.now()));
-    }
-
-    public static CandidateStore instOf() {
-        return INST;
     }
 
     public Collection<Candidate> findAll() {
@@ -34,7 +29,7 @@ public class CandidateStore {
         candidates.put(candidate.getId(), candidate);
     }
 
-    public Object findById(int id) {
+    public Candidate findById(int id) {
         return candidates.get(id);
     }
 

@@ -1,20 +1,17 @@
 package ru.job4j.dreamjob.service;
 
+import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.store.PostStore;
 
 import java.util.Collection;
 
+@Service
 public class PostService {
-    private static final PostService INST = new PostService();
-    private final PostStore store = PostStore.instOf();
+    private final PostStore store;
 
-   private PostService() {
-
-   }
-
-    public static PostService instOf() {
-        return INST;
+    public PostService(PostStore store) {
+        this.store = store;
     }
 
     public Collection<Post> findAll() {
@@ -22,7 +19,7 @@ public class PostService {
     }
 
     public void add(Post post) {
-       store.add(post);
+        store.add(post);
     }
 
     public Post findById(int id) {
@@ -30,6 +27,6 @@ public class PostService {
     }
 
     public void update(Post post) {
-       store.update(post);
+        store.update(post);
     }
 }
