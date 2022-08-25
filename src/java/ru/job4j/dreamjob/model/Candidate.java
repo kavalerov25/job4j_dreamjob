@@ -1,14 +1,25 @@
 package ru.job4j.dreamjob.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Candidate {
+public class Candidate implements Serializable {
 
     private int id;
     private String name;
     private String description;
     private LocalDateTime created;
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    private boolean visible;
 
     public Candidate() { }
 

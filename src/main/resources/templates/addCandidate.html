@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -25,7 +24,8 @@
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Dream Job, <small th:text="${user}"></small></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -38,23 +38,28 @@
             </div>
         </div>
     </nav>
-    <div class="row">
+    <div class="row pt-3">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Новый кандидат.
+                Новый кандидат
             </div>
             <div class="card-body">
                 <form th:action="@{/createCandidate}" method="POST">
-                <form>
+                    <input type="hidden" name="id" value="0"/>
                     <div class="form-group">
-                        <label>Имя
-                            <input type="text" class="form-control">
-                        </label>
-                        <label>Описание
-                            <input type="text" class="form-control">
-                        </label>
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" name="name" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="desc">Описание</label>
+                        <input type="text" class="form-control" name="desc" id="desc">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <div class="form-check">
+                        <input type="checkbox" name="visible" class="form-check-input" id="visible">
+                        <label class="form-check-label" for="visible">Опубликовать</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
                 </form>
             </div>
         </div>
