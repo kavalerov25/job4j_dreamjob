@@ -10,8 +10,9 @@ public class Post implements Serializable {
     private String description;
     private LocalDate created;
     private boolean visible;
+    private City city;
 
-    public Post() {
+    private Post() {
     }
 
     public Post(int id, String name, String description, LocalDate created) {
