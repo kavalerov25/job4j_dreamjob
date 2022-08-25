@@ -35,6 +35,6 @@ public class CandidateStore {
     }
 
     public void update(Candidate candidate) {
-        candidates.put(candidate.getId(), candidate);
+        candidates.replace(candidate.getId(), candidate);
     }
 }
