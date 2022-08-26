@@ -11,6 +11,16 @@ public class Candidate implements Serializable {
     private String description;
     private LocalDateTime created;
 
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    private byte[] photo;
+
     public boolean isVisible() {
         return visible;
     }

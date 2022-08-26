@@ -45,6 +45,7 @@
                 <th scope="col">Описание</th>
                 <th scope="col">Дата добавления</th>
             </tr>
+
             </thead>
             <tbody>
             <tr th:each="candidate: ${candidates}">
@@ -60,6 +61,13 @@
                     <span th:if="${!candidate.visible}">
                         <i class="fa fa-square-o"></i>
                     </span>
+                </td>
+            </tr>
+            <tr th:each="candidate: ${candidates}">
+                <td th:text="${candidate.id}"></td>
+                <td>
+                    <img th:width="150" th:high="150" th:src="@{|/photoCandidate/${candidate.id}|}">
+                    <span th:text="${candidate.name}"></span>
                 </td>
             </tr>
             </tbody>

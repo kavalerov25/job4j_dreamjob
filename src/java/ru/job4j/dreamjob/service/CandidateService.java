@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.store.CandidateStore;
 
-
 import java.util.Collection;
 
 @ThreadSafe
@@ -33,4 +32,5 @@ public class CandidateService {
     public void update(Candidate candidate) {
         store.update(candidate);
     }
+
 }
