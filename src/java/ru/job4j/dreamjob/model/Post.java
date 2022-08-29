@@ -11,6 +11,13 @@ public class Post implements Serializable {
     private LocalDate created;
     private boolean visible;
     private City city;
+    private int cityID;
+
+    public Post(int id, String name, int cityID) {
+        this.id = id;
+        this.name = name;
+        this.cityID = cityID;
+    }
 
     private Post() {
     }
@@ -25,6 +32,14 @@ public class Post implements Serializable {
     public Post(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public int getCityID() {
+        return cityID;
+    }
+
+    public void setCityID(int cityID) {
+        this.cityID = cityID;
     }
 
     public City getCity() {
