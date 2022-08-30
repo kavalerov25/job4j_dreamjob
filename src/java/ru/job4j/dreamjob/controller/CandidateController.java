@@ -35,12 +35,6 @@ public class CandidateController {
         return "addCandidate";
     }
 
-    @PostMapping("/createCandidate")
-    public String createPost(@ModelAttribute Candidate candidate) {
-        candidateService.add(candidate);
-        return "redirect:/candidates";
-    }
-
     @GetMapping("/formUpdateCandidate/{candidateId}")
     public String formUpdatePost(Model model, @PathVariable("candidateId") int id) {
         model.addAttribute("candidate", candidateService.findById(id));

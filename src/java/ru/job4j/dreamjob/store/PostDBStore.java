@@ -1,13 +1,13 @@
 package ru.job4j.dreamjob.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Post;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,7 @@ import java.util.List;
 public class PostDBStore {
 
     private final BasicDataSource pool;
+    private static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
 
     public PostDBStore(BasicDataSource pool) {
         this.pool = pool;
@@ -27,11 +28,18 @@ public class PostDBStore {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Post(it.getInt("id"), it.getString("name"), it.getInt("city_id")));
+                    posts.add(
+                            new Post(
+                                    it.getInt("id"),
+                                    it.getString("name"),
+                                    it.getString("description"),
+                                    it.getDate("created").toLocalDate(),
+                                    it.getBoolean("visible"),
+                                    it.getInt("city_id")));
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in log", e);
         }
         return posts;
     }
@@ -39,10 +47,14 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("INSERT INTO post(name) VALUES (?)",
+             PreparedStatement ps =  cn.prepareStatement("INSERT INTO post(name, description, created, visible, city_id) VALUES (?, ?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
+            ps.setString(2, post.getDescription());
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setBoolean(4, post.isVisible());
+            ps.setInt(5, post.getCity().getId());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -50,20 +62,22 @@ public class PostDBStore {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in log", e);
         }
         return post;
     }
 
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("UPDATE post SET name = (?), city_id = (?) WHERE id = (?)")) {
+             PreparedStatement ps = cn.prepareStatement("UPDATE post SET name = (?), description = (?), visible = (?), city_id = (?) WHERE id = (?)")) {
             ps.setString(1, post.getName());
-            ps.setInt(2, post.getCity().getId());
-            ps.setInt(3, post.getId());
+            ps.setString(2, post.getDescription());
+            ps.setBoolean(3, post.isVisible());
+            ps.setInt(4, post.getCity().getId());
+            ps.setInt(5, post.getId());
             ps.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Exception in log", e);
         }
     }
 
@@ -75,11 +89,16 @@ public class PostDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new Post(it.getInt("id"), it.getString("name"),  it.getInt("city_id"));
+                    result = new Post(it.getInt("id"),
+                            it.getString("name"),
+                            it.getString("description"),
+                            it.getTimestamp("created").toLocalDateTime().toLocalDate(),
+                            it.getBoolean("visible"),
+                            it.getInt("city_id"));
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception in log", e);
         }
         return result;
     }
