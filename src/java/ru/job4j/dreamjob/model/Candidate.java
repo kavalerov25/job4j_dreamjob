@@ -10,28 +10,11 @@ public class Candidate implements Serializable {
     private String name;
     private String description;
     private LocalDateTime created;
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
-
     private byte[] photo;
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
     private boolean visible;
 
-    public Candidate() { }
+    public Candidate() {
+    }
 
     public Candidate(int id, String name) {
         this.id = id;
@@ -43,6 +26,22 @@ public class Candidate implements Serializable {
         this.name = name;
         this.description = description;
         this.created = created;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public String getDescription() {

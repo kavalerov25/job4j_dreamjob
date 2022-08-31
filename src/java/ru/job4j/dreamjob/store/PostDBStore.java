@@ -47,7 +47,9 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("INSERT INTO post(name, description, created, visible, city_id) VALUES (?, ?, ?, ?, ?)",
+             PreparedStatement ps =  cn.prepareStatement(
+                     "INSERT INTO post(name, description, created, visible, city_id)" +
+                                        " VALUES (?, ?, ?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -69,12 +71,17 @@ public class PostDBStore {
 
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("UPDATE post SET name = (?), description = (?), visible = (?), city_id = (?) WHERE id = (?)")) {
+             PreparedStatement ps = cn.prepareStatement(
+                     "UPDATE post SET name = (?), description = (?), created = (?)," +
+                     " visible = (?), city_id = (?) WHERE id = (?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
-            ps.setBoolean(3, post.isVisible());
-            ps.setInt(4, post.getCity().getId());
-            ps.setInt(5, post.getId());
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setBoolean(4, post.isVisible());
+            ps.setInt(5, post.getCity().getId());
+            ps.setInt(6, post.getId());
             ps.execute();
         } catch (SQLException e) {
             LOG.error("Exception in log", e);
