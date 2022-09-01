@@ -1,7 +1,7 @@
 package ru.job4j.dreamjob.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Candidate implements Serializable {
@@ -9,9 +9,11 @@ public class Candidate implements Serializable {
     private int id;
     private String name;
     private String description;
-    private LocalDateTime created;
+    private LocalDate created;
+    private City city;
     private byte[] photo;
     private boolean visible;
+    private int cityID;
 
     public Candidate() {
     }
@@ -21,11 +23,36 @@ public class Candidate implements Serializable {
         this.name = name;
     }
 
-    public Candidate(int id, String name, String description, LocalDateTime created) {
+    public Candidate(int id, String name, String description, LocalDate created) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.created = created;
+    }
+
+    public Candidate(int id, String name, String description, LocalDate created, boolean visible, int city_id) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.created = created;
+        this.visible = visible;
+        this.cityID = cityID;
+    }
+
+    public int getCityID() {
+        return cityID;
+    }
+
+    public void setCityID(int cityID) {
+        this.cityID = cityID;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public byte[] getPhoto() {
@@ -52,11 +79,11 @@ public class Candidate implements Serializable {
         this.description = description;
     }
 
-    public LocalDateTime getCreated() {
+    public LocalDate getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(LocalDate created) {
         this.created = created;
     }
 
@@ -92,4 +119,6 @@ public class Candidate implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 }

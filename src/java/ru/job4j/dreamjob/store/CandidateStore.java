@@ -3,6 +3,8 @@ package ru.job4j.dreamjob.store;
 import net.jcip.annotations.ThreadSafe;
 import ru.job4j.dreamjob.model.Candidate;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Collection;
@@ -18,9 +20,9 @@ public class CandidateStore {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private CandidateStore() {
-        candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "kirill", "intern", LocalDateTime.of(2022, Month.AUGUST,24,20,40)));
-        candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "stas", "coach java", LocalDateTime.now()));
-        candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "petr", "Java senior", LocalDateTime.now()));
+        candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "kirill", "intern", LocalDate.now()));
+        candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "stas", "coach java", LocalDate.now()));
+        candidates.put(idCount.incrementAndGet(), new Candidate(idCount.get(), "petr", "Java senior", LocalDate.now()));
     }
 
     public Collection<Candidate> findAll() {
