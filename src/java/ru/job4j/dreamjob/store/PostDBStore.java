@@ -14,8 +14,19 @@ import java.util.List;
 @Repository
 public class PostDBStore {
 
-    private final BasicDataSource pool;
     private static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
+    private static final String FIND_ALL_SQL = "SELECT * FROM post";
+    private static final String INSERT_DATA_QUERY = """
+            INSERT INTO post(name, description, created, visible, city_id)
+            VALUES (?, ?, ?, ?, ?)
+            """;
+    private static final String UPDATE_DATA_QUERY = """
+            "UPDATE post SET name = (?), description = (?), created = (?)," 
+            " visible = (?), city_id = (?) WHERE id = (?)"
+             """;
+    private static final String FIND_BY_ID_SQL = "SELECT * FROM post WHERE id = ?";
+    private final BasicDataSource pool;
+
 
     public PostDBStore(BasicDataSource pool) {
         this.pool = pool;
@@ -24,7 +35,7 @@ public class PostDBStore {
     public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post")
+             PreparedStatement ps = cn.prepareStatement(FIND_ALL_SQL)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -47,9 +58,8 @@ public class PostDBStore {
 
     public Post add(Post post) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement(
-                     "INSERT INTO post(name, description, created, visible, city_id)" +
-                                        " VALUES (?, ?, ?, ?, ?)",
+             PreparedStatement ps = cn.prepareStatement(
+                     INSERT_DATA_QUERY,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -72,8 +82,7 @@ public class PostDBStore {
     public void update(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "UPDATE post SET name = (?), description = (?), created = (?)," +
-                     " visible = (?), city_id = (?) WHERE id = (?)",
+                     UPDATE_DATA_QUERY,
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, post.getName());
@@ -91,7 +100,7 @@ public class PostDBStore {
     public Post findById(int id) {
         Post result = null;
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post WHERE id = ?")
+             PreparedStatement ps = cn.prepareStatement(FIND_BY_ID_SQL)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
