@@ -87,10 +87,9 @@ public class PostDBStore {
         ) {
             ps.setString(1, post.getName());
             ps.setString(2, post.getDescription());
-            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            ps.setBoolean(4, post.isVisible());
-            ps.setInt(5, post.getCity().getId());
-            ps.setInt(6, post.getId());
+            ps.setBoolean(3, post.isVisible());
+            ps.setInt(4, post.getCity().getId());
+            ps.setInt(5, post.getId());
             ps.execute();
         } catch (SQLException e) {
             LOG.error("Exception in log", e);
