@@ -129,4 +129,13 @@ public class Candidate implements Serializable {
     }
 
 
+    @Override
+    public String toString() {
+        return "Candidate{"
+               + "id=" + id
+               + ", name='" + name + '\''
+               + ", description='" + description + '\''
+               + ", created=" + created
+               + '}';
+    }
 }

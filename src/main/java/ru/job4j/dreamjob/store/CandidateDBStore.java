@@ -18,11 +18,11 @@ public class CandidateDBStore {
 
     private static final String FIND_ALL_SQL = "SELECT * FROM candidate";
     private static final String INSERT_DATA_QUERY = """
-            INSERT INTO candidate(name, description, created, photo)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO candidate(name, description, created)
+            VALUES (?, ?, ?)
             """;
     private static final String UPDATE_DATA_QUERY = """
-             UPDATE candidate SET name = ?, description = ?, created = ?, photo = ? WHERE id = ?
+             UPDATE candidate SET name = ?, description = ?, created = ?, WHERE id = ?
              """;
     private static final String FIND_BY_ID_SQL = "SELECT * FROM candidate WHERE id = ?";
 
@@ -42,8 +42,7 @@ public class CandidateDBStore {
                                     it.getInt("id"),
                                     it.getString("name"),
                                     it.getString("description"),
-                                    it.getDate("created").toLocalDate(),
-                                    it.getBytes("photo")));
+                                    it.getDate("created").toLocalDate()));
                 }
             }
         } catch (Exception e) {
@@ -62,7 +61,6 @@ public class CandidateDBStore {
             ps.setString(1, candidate.getName());
             ps.setString(2, candidate.getDescription());
             ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            ps.setBytes(4, candidate.getPhoto());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -85,8 +83,7 @@ public class CandidateDBStore {
             ps.setString(2, candidate.getDescription());
             ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             ps.setBoolean(4, candidate.isVisible());
-            ps.setBytes(4, candidate.getPhoto());
-            ps.execute();
+            ps.executeUpdate();
         } catch (SQLException e) {
             LOG.error("Exception in log", e);
         }
@@ -103,8 +100,7 @@ public class CandidateDBStore {
                     result = new Candidate(it.getInt("id"),
                             it.getString("name"),
                             it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime().toLocalDate(),
-                            it.getBytes("photo"));
+                            it.getTimestamp("created").toLocalDateTime().toLocalDate());
                 }
             }
         } catch (Exception e) {
