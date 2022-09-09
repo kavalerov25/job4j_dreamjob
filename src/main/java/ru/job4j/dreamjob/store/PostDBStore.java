@@ -90,7 +90,7 @@ public class PostDBStore {
             ps.setBoolean(3, post.isVisible());
             ps.setInt(4, post.getCity().getId());
             ps.setInt(5, post.getId());
-            ps.execute();
+            ps.executeUpdate();
         } catch (SQLException e) {
             LOG.error("Exception in log", e);
         }
