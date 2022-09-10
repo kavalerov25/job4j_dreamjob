@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS post (
+create TABLE IF NOT EXISTS post (
     id          SERIAL PRIMARY KEY,
     name        TEXT,
     description TEXT,
@@ -7,10 +7,17 @@ CREATE TABLE IF NOT EXISTS post (
     city_id     INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS candidate (
+create TABLE IF NOT EXISTS candidate (
     id          SERIAL PRIMARY KEY,
     name        TEXT,
     description TEXT,
     created     TIMESTAMP,
     photo       BYTEA
+);
+
+create TABLE IF NOT EXISTS users (
+  id            SERIAL PRIMARY KEY,
+  name     VARCHAR(50),
+  email    VARCHAR(50) UNIQUE,
+  password TEXT
 );
