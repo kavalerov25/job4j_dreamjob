@@ -9,6 +9,7 @@ import ru.job4j.dreamjob.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository
@@ -25,6 +26,11 @@ public class UserDBStore {
     private static final String FIND_BY_ID_SQL = """
             SELECT * FROM users WHERE id = ?
             """;
+
+    private static final String FIND_BY_EMAIL_PWD = """
+            SELECT * FROM users WHERE email = ? and password = ?
+            """;
+
 
     private final BasicDataSource pool;
 
@@ -70,6 +76,25 @@ public class UserDBStore {
             }
         } catch (Exception e) {
             LOG_USER_DB.error("Error findById", e);
+        }
+        return null;
+    }
+
+    public User findUserByEmailAndPwd(String email, String password) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(FIND_BY_EMAIL_PWD)
+        ) {
+            ps.setString(1, email);
+            ps.setString(2, password);
+            try (ResultSet it = ps.executeQuery()) {
+                if (it.next()) {
+                    return new User(it.getInt("id"), it.getString("name"),
+                            it.getString("email"),
+                            it.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            LOG_USER_DB.warn("Can't find user by id", e);
         }
         return null;
     }
