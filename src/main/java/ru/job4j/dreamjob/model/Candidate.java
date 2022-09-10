@@ -30,7 +30,7 @@ public class Candidate implements Serializable {
         this.created = created;
     }
 
-    public Candidate(int id, String name, String description, LocalDate created, boolean visible, int city_id) {
+    public Candidate(int id, String name, String description, LocalDate created, boolean visible, int cityID) {
         this.id = id;
         this.name = name;
         this.description = description;

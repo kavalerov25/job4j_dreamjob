@@ -18,10 +18,10 @@ public class PostDBStoreTest {
         BasicDataSource pool = new Main().loadPool();
         PostDBStore store = new PostDBStore(pool);
         Post post = new Post(0, "Java Job", "description", true, new City());
-    /**     City city = new City();
-            city.setId(1);
-            post.setCity(city);
-    **/
+        /**     City city = new City();
+         city.setId(1);
+         post.setCity(city);
+         **/
         store.add(post);
         Post postInDb = store.findById(post.getId());
         assertThat(postInDb.getName(), is(post.getName()));
@@ -31,7 +31,7 @@ public class PostDBStoreTest {
     public void whenCreateTwoPosts() {
         PostDBStore store = new PostDBStore(new Main().loadPool());
         Post post = new Post(0, "Java Job", "description", true, new City(1, "Москва"));
-        Post postTwo = new Post(1, "Python Job","description", true, new City(2,  "СПБ"));
+        Post postTwo = new Post(1, "Python Job", "description", true, new City(2, "СПБ"));
         store.add(post);
         store.add(postTwo);
         Post postInDb = store.findById(postTwo.getId());
@@ -42,11 +42,11 @@ public class PostDBStoreTest {
     public void whenFindAllPosts() {
         PostDBStore store = new PostDBStore(new Main().loadPool());
         Post post = new Post(0, "Java Job", "description", true, new City(1, "Москва"));
-        Post postTwo = new Post(1, "Python Job","description", true, new City(2,  "СПБ"));
+        Post postTwo = new Post(1, "Python Job", "description", true, new City(2, "СПБ"));
         int size = store.findAll().size();
         store.add(post);
         store.add(postTwo);
         List<Post> postInDb = store.findAll();
-        assertThat(postInDb.size(),is(size + 2));
+        assertThat(postInDb.size(), is(size + 2));
     }
 }
