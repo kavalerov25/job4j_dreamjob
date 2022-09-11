@@ -9,7 +9,6 @@ import ru.job4j.dreamjob.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository
@@ -57,30 +56,32 @@ public class UserDBStore {
         } catch (Exception e) {
             LOG_USER_DB.error("Error add", e);
         }
-        return  result;
+        return result;
     }
 
-    public User findById(int id) {
+    public Optional<User> findById(int id) {
+        Optional<User> result = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(FIND_BY_ID_SQL)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new User(
+                    return Optional.of(new User(
                             it.getInt("id"),
                             it.getString("name"),
                             it.getString("email"),
-                            it.getString("password"));
+                            it.getString("password")));
                 }
             }
         } catch (Exception e) {
             LOG_USER_DB.error("Error findById", e);
         }
-        return null;
+        return result;
     }
 
-    public User findUserByEmailAndPwd(String email, String password) {
+    public Optional<User> findUserByEmailAndPwd(String email, String password) {
+        Optional<User> result = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(FIND_BY_EMAIL_PWD)
         ) {
@@ -88,14 +89,14 @@ public class UserDBStore {
             ps.setString(2, password);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    return new User(it.getInt("id"), it.getString("name"),
+                    return Optional.of(new User(it.getInt("id"), it.getString("name"),
                             it.getString("email"),
-                            it.getString("password"));
+                            it.getString("password")));
                 }
             }
         } catch (Exception e) {
             LOG_USER_DB.warn("Can't find user by id", e);
         }
-        return null;
+        return result;
     }
 }
