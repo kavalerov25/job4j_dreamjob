@@ -39,7 +39,7 @@ public class UserDBStore {
     }
 
     public Optional<User> add(User user) {
-        Optional<User> rsl;
+        Optional<User> result = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(ADD_SQL,
                      PreparedStatement.RETURN_GENERATED_KEYS)
@@ -51,13 +51,13 @@ public class UserDBStore {
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
                     user.setId(id.getInt(1));
+                    result = Optional.of(user);
                 }
             }
-            rsl = Optional.of(user);
         } catch (Exception e) {
             LOG_USER_DB.error("Error add", e);
         }
-        return Optional.ofNullable(user);
+        return  result;
     }
 
     public User findById(int id) {
