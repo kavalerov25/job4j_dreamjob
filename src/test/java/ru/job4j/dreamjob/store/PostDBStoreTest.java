@@ -49,4 +49,17 @@ public class PostDBStoreTest {
         List<Post> postInDb = store.findAll();
         assertThat(postInDb.size(), is(size + 2));
     }
+
+    @Test
+    public void whenUpdatePost() {
+        PostDBStore store = new PostDBStore(new Main().loadPool());
+        Post post = new Post(0, "Java Job", "description", true, new City());
+        System.out.println(post.toString());
+        store.add(post);
+        post.setName("New language");
+        store.update(post);
+        Post postInDb = store.findById(post.getId());
+        System.out.println(post.toString());
+        assertThat(postInDb.getName(), is(post.getName()));
+    }
 }

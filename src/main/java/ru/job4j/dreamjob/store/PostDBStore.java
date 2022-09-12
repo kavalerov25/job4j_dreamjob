@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Post;
+import ru.job4j.dreamjob.service.CityService;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -21,8 +22,7 @@ public class PostDBStore {
             VALUES (?, ?, ?, ?, ?)
             """;
     private static final String UPDATE_DATA_QUERY = """
-            "UPDATE post SET name = (?), description = (?), created = (?)," 
-            " visible = (?), city_id = (?) WHERE id = (?)"
+           UPDATE post SET name = ?, description = ?, visible = ?, city_id = ? WHERE id = ?
              """;
     private static final String FIND_BY_ID_SQL = "SELECT * FROM post WHERE id = ?";
     private final BasicDataSource pool;
@@ -107,9 +107,8 @@ public class PostDBStore {
                     result = new Post(it.getInt("id"),
                             it.getString("name"),
                             it.getString("description"),
-                            it.getTimestamp("created").toLocalDateTime().toLocalDate(),
                             it.getBoolean("visible"),
-                            it.getInt("city_id"));
+                            new CityService().findById(it.getInt("city_id")));
                 }
             }
         } catch (Exception e) {
