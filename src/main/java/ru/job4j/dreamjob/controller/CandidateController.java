@@ -28,12 +28,7 @@ public class CandidateController {
 
     @GetMapping("/candidates")
     public String candidates(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        SessionControl.getUserSession(model, session);
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates";
     }
@@ -41,12 +36,7 @@ public class CandidateController {
     @GetMapping("/formAddCandidate")
     public String addCandidate(Model model, HttpSession session) {
         model.addAttribute("candidate", new Candidate(0, "Заполните поле"));
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        SessionControl.getUserSession(model, session);
         return "addCandidate";
     }
 

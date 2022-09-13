@@ -30,12 +30,7 @@ public class PostController {
 
     @GetMapping("/posts")
     public String posts(Model model,  HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        SessionControl.getUserSession(model, session);
         model.addAttribute("posts", postService.findAll());
         model.addAttribute("city", cityService.getAllCities());
         return "posts";
@@ -67,12 +62,7 @@ public class PostController {
 
     @GetMapping("/formAddPost")
     public String formAddPost(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        SessionControl.getUserSession(model, session);
         model.addAttribute("cities", cityService.getAllCities());
         return "addPost";
     }
