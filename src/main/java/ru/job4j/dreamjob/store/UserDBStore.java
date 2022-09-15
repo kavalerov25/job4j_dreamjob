@@ -9,6 +9,8 @@ import ru.job4j.dreamjob.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -28,6 +30,10 @@ public class UserDBStore {
 
     private static final String FIND_BY_EMAIL_PWD = """
             SELECT * FROM users WHERE email = ? and password = ?
+            """;
+
+    private static final String FIND_ALL_SQL = """
+            SELECT * FROM users ORDER BY id
             """;
 
 
@@ -98,5 +104,26 @@ public class UserDBStore {
             LOG_USER_DB.warn("Can't find user by id", e);
         }
         return result;
+    }
+
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(FIND_ALL_SQL)
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    users.add(
+                            new User(
+                                    it.getInt("id"),
+                                    it.getString("name"),
+                                    it.getString("email"),
+                                    it.getString("password")));
+                }
+            }
+        } catch (Exception e) {
+            LOG_USER_DB.error("Exception in log", e);
+        }
+        return users;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.store.UserDBStore;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,5 +27,9 @@ public class UserService {
 
     public Optional<User> findUserByEmailAndPwd(String email, String password) {
         return userDBStore.findUserByEmailAndPwd(email, password);
+    }
+
+    public List<User> findAll() {
+        return userDBStore.findAll();
     }
 }
