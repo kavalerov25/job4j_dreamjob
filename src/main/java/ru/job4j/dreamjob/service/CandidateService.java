@@ -9,7 +9,6 @@ import java.util.List;
 @ThreadSafe
 @Service
 public class CandidateService {
-
     private final CandidateDBStore store;
 
     public CandidateService(CandidateDBStore store) {
@@ -32,5 +31,4 @@ public class CandidateService {
     public void update(Candidate candidate) {
         store.update(candidate);
     }
-
 }

@@ -4,7 +4,6 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -26,43 +25,25 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#">Главная</a>
+                <a class="nav-item nav-link active" href="#">Главная <span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" th:href="@{/posts}">Вакансии</a>
-                <a class="nav-item nav-link active" th:href="@{/addPost}">Добавить вакансию</a>
+                <a class="nav-item nav-link" th:href="@{/formAddPost}">Добавить вакансию</a>
                 <a class="nav-item nav-link" th:href="@{/candidates}">Кандидаты</a>
-                <a class="nav-item nav-link" th:href="@{/registration}">Зарегистрироваться</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
-                    <span th:text="${user.name}"></span>
-                    <span> | Войти</span>
-                </a>
-                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
-                    <span th:text="${user.name}"></span>
-                    <span th:text="${user.email}"></span>
-                    <span> | Выйти</span>
-                </a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/registrationPage}">Регистрация</a>
+                <a class="nav-item nav-link" th:href="@{/formAddCandidate}">Добавить кандидата</a>
+                <a class="nav-item nav-link" th:href="@{/formAddUser}">Зарегистрироваться</a>
+                <a class="nav-item nav-link" th:href="@{/users}">Пользователи</a>
             </div>
         </div>
     </nav>
-    <div class="row pt-3">
+    <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Редактирование кандидата.
+                Новый пользователь.
             </div>
             <div class="card-body">
-                <form th:action="@{/updateCandidate}" method="POST" th:object="${candidate}" enctype="multipart/form-data">
-                    <input type="hidden" name="id" th:field="*{id}"/>
-                    <div class="form-group">
-                        <label for="name">Имя</label>
-                        <input type="text" class="form-control" name="name" id="name" th:field="*{name}">
-                        <label for="name">Описание</label>
-                        <input type="text" class="form-control" name="name" id="description" th:field="*{description}">
-                        <div class="form-group">
-                            <label for="name">Фотография</label>
-                            <input type="file" class="form-control" name="file" id="file">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                <form th:action="@{/formAddUser}" method="POST" enctype="multipart/form-data">
+                    <h4>Пользователь с такой почтой уже существует!!!</h4>
+                    <button type="submit" class="btn btn-primary">Назад</button>
                 </form>
             </div>
         </div>

@@ -43,6 +43,7 @@
                     <span th:text="${user.email}"></span>
                     <span> | Выйти</span>
                 </a>
+                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/registrationPage}">Регистрация</a>
             </div>
         </div>
     </nav>

@@ -64,6 +64,7 @@ public class PostController {
     @GetMapping("/formAddPost")
     public String formAddPost(Model model, HttpSession session) {
         SessionControl.getUserSession(model, session);
+        model.addAttribute("posts", postService.findAll());
         model.addAttribute("cities", cityService.getAllCities());
         return "addPost";
     }

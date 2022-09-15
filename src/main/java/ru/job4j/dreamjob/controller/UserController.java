@@ -25,14 +25,20 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/registrationPage")
+    public String registerUser(Model model) {
+        model.addAttribute("user", new User(0, "Заполните поле"));
+        return "registerUser";
+    }
+
     @GetMapping("/formAddUser")
     public String formAddPost(Model model, HttpSession session) {
         SessionControl.getUserSession(model, session);
         model.addAttribute("user", userService.findAll());
-        return "addPost";
+        return "addUser";
     }
 
-    @PostMapping("/registration")
+     @PostMapping("/registration")
     public String registration(Model model, @ModelAttribute User user) {
         Optional<User> regUser = userService.add(user);
         if (regUser.isEmpty()) {
@@ -40,6 +46,18 @@ public class UserController {
             return "redirect:/fail";
         }
         return "redirect:/success";
+    }
+
+    @GetMapping("/users")
+    public String posts(Model model, HttpSession session) {
+        SessionControl.getUserSession(model, session);
+        model.addAttribute("users", userService.findAll());
+        return "users";
+    }
+
+    @GetMapping("/fail")
+    public String fail() {
+        return "fail";
     }
 
     @GetMapping("/loginPage")
@@ -59,5 +77,10 @@ public class UserController {
         HttpSession session = req.getSession();
         session.setAttribute("user", userDb.get());
         return "redirect:/index";
+    }
+
+    @GetMapping("/success")
+    public String success() {
+        return "success";
     }
 }
