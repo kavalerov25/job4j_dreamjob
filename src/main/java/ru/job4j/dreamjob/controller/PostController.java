@@ -16,7 +16,7 @@ import ru.job4j.dreamjob.util.SessionControl;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @ThreadSafe
 @Controller
@@ -47,7 +47,8 @@ public class PostController {
     }
 
     @GetMapping("/formUpdatePost/{postId}")
-    public String formUpdatePost(Model model, @PathVariable("postId") int id) {
+    public String formUpdatePost(Model model, @PathVariable("postId") int id, HttpSession session) {
+        SessionControl.getUserSession(model, session);
         model.addAttribute("post", postService.findById(id));
         model.addAttribute("cities", cityService.getAllCities());
         return "updatePost";
